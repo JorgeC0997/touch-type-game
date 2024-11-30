@@ -1,7 +1,7 @@
 import { config } from "dotenv";
 config();
 import express from "express";
-
+import { getAccounts, addAccount } from "./models/accountModel.js";
 const app = express();
 const port = process.env.SERVER_PORT;
 
@@ -14,6 +14,26 @@ app.use((req, res, next) => {
     "Content-Type, Access-Control-Allow-Headers"
   );
   next();
+});
+
+app.get("/accounts", (req, res) => {
+  getAccounts()
+    .then((response) => {
+      res.status(200).send(response);
+    })
+    .catch((error) => {
+      res.status(500).send(error);
+    });
+});
+
+app.post("/accounts", (req, res) => {
+  addAccount(req.body)
+    .then((response) => {
+      res.status(200).send(response);
+    })
+    .catch((error) => {
+      res.status(500).send(error);
+    });
 });
 
 app.listen(port, () => {
