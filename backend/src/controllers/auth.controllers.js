@@ -27,7 +27,9 @@ export const userAuth = async (req, res) => {
         expiresIn: maxAge,
       });
       res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
-      res.status(200).json({ data: result.rows[0] });
+      res
+        .status(200)
+        .json({ id: result.rows[0].id, username: result.rows[0].username });
     } catch (error) {
       res.status(401).send({ message: error.message });
     }

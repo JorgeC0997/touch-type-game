@@ -33,11 +33,22 @@ export const createUser = async (req, res) => {
   try {
     const hash = await bcrypt.hash(password, parseInt(SALT_ROUNDS));
     try {
-      const { rows } = await pool.query(
-        "INSERT INTO users (id, username, hash) VALUES ($1, $2, $3) RETURNING *",
+      const userResponse = await pool.query(
+        "INSERT INTO users (id, username, hash) VALUES ($1, $2, $3) RETURNING id, username",
         [uuid, username, hash]
       );
-      res.status(200).send(rows[0]);
+      const accountResponse = await pool.query(
+        "INSERT INTO accounts (user_id, level) VALUES ($1, $2) RETURNING id",
+        [uuid, 1]
+      );
+      if (!accountResponse.rows[0].id)
+        return res
+          .status(500)
+          .json({ message: "Error occurred while creating user account" });
+      res.status(200).json({
+        user: userResponse.rows[0],
+        accountId: accountResponse.rows[0].id,
+      });
     } catch (error) {
       res.status(500).send({ message: error.message });
     }
@@ -61,8 +72,14 @@ export const deleteUser = async (req, res) => {
 export const updateUser = async (req, res) => {
   const { id } = req.params;
   const { username, password } = req.body;
+
+  if (!id) return res.status(401).json({ message: "Insufficient parameters" });
+
   try {
-    const hash = await bcrypt.hash(password, parseInt(SALT_ROUNDS));
+    let hash;
+    if (password) {
+      hash = await bcrypt.hash(password, parseInt(SALT_ROUNDS));
+    }
 
     try {
       const result = await pool.query(
@@ -70,9 +87,11 @@ export const updateUser = async (req, res) => {
         [username, hash, id]
       );
       if (result.rowCount <= 0)
-        return res.status(404).json({ message: "user not found" });
+        return res.status(404).json({ message: "Could not update user" });
       res.status(200).send(result.rows[0]);
-    } catch (error) {}
+    } catch (error) {
+      res.status(400).json({ message: error.message });
+    }
   } catch (error) {
     res.status(400).send({ message: error.message });
   }
