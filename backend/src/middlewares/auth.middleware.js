@@ -8,7 +8,6 @@ export const requireAuth = (req, res, next) => {
       if (err) {
         res.status(403).json(err);
       } else {
-        console.log(decoded);
         next();
       }
     });
