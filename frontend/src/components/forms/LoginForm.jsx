@@ -1,11 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
+import { useNavigate } from "react-router";
+import StyledInput from "../ui/StyledInput";
+import PrimaryButton from "../ui/PrimaryButton";
 
 const LoginForm = () => {
+  const authContext = useContext(AuthContext);
+  const navigate = useNavigate();
+  const inputErrorStyles = "border-red-600";
+  const inputNormalStyles = "border-gray-500";
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const handleSubmit = (e) => {
+  const [inputError, setInputError] = useState(false);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log({ username, password });
+    const isUserLoggedin = await authContext.loginUser(username, password);
+    if (!isUserLoggedin) {
+      setInputError(true);
+    } else {
+      setUsername("");
+      setPassword("");
+      setInputError(false);
+    }
   };
   return (
     <form
@@ -13,18 +30,28 @@ const LoginForm = () => {
       method="post"
       className="p-12 bg-base-neutral rounded-xl flex flex-col gap-y-4"
     >
-      <input
+      <StyledInput
         type="text"
         placeholder="User Name"
-        onChange={(e) => setUsername(e.target.value)}
-        className="px-3 h-8 text-lg bg-base-light rounded-lg border-2 border-gray-500"
+        errorState={inputError}
+        onChange={(e) => {
+          setUsername(e.target.value);
+          if (inputError) setInputError(false);
+        }}
       />
-      <input
+      <StyledInput
         type="password"
         placeholder="Password"
-        onChange={(e) => setPassword(e.target.value)}
+        errorState={inputError}
+        onChange={(e) => {
+          setPassword(e.target.value);
+          if (inputError) setInputError(false);
+        }}
       />
-      <button type="submit">Log in</button>
+      {inputError && (
+        <p className="text-white text-sm">*Username and/or password is wrong</p>
+      )}
+      <PrimaryButton legend="Log in" />
     </form>
   );
 };
