@@ -47,7 +47,7 @@ In the same directory you'll find a *.env.example* file, copy all of its content
 > **_NOTE:_**   You must change the values of **USER** and **PASSWORD** with your own postgres user and password.
 
 Open up a terminal window within VSCode by going to **View > Terminal** from the menu bar or using\
-the shortcut ``Ctrl+` ``
+the shortcut ``Ctrl+` ``\
 Add a new Command Prompt Terminal as shown in the picture down below:
 
 ![Open new terminal 1](/screenshots/open_terminal_1.png) ![Open new terminal 2](/screenshots/open_terminal_2.png)
