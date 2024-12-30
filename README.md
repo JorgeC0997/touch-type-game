@@ -14,6 +14,18 @@ grating you access to a new set of exercises more dificult to type. Happy typing
 ## Project Installation
 
 This project uses the power of Postgresql.\
+Before we start, it is required to [install PostgreSql](https://www.postgresql.org/) (if you don't have it\
+in your system already), and add the postgres bin directory to the system path as follows:
+
+1. c> program files> PostgreSQL> bin> psql
+
+2. copy the path
+
+3. control panel> advanced system settings> Environment Variables> select Path from the system variables> Edit > New> Paste> Ok> OK> OK
+
+We do this to have access to postgres tools in the command line.
+
+Next steps involves creating the database of our project.\
 Start by opening a terminal or command prompt and access the PostgreSQL server using the following command:
 
 `psql -U your_admin_username`
@@ -34,7 +46,10 @@ In the same directory you'll find a *.env.example* file, copy all of its content
 
 > **_NOTE:_**   You must change the values of **USER** and **PASSWORD** with your own postgres user and password.
 
-Open up a terminal window within VSCode by going to **View > Terminal** from the menu bar or using the shortcut ``Ctrl+` ``
+Open up a terminal window within VSCode by going to **View > Terminal** from the menu bar or using the shortcut ``Ctrl+` ``\
+Add a new Command Prompt Terminal as shown in the picture down below:
+
+![Open new terminal 1](/screenshots/open_terminal_1.png) ![Open new terminal 2](/screenshots/open_terminal_2.png)
 
 Change directory from **...\touch-type-game>** to **...\touch-type-game\backend>** by running the following command:
 
