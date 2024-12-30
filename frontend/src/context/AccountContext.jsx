@@ -76,11 +76,14 @@ export const AccountContextProvider = ({ children }) => {
   const levelUp = async (scoresByAccount) => {
     const levelExerciseCount = [10, 10, 8];
     let completedScoreByLevel = 0;
-    scoresByAccount.forEach((score) => {
-      if (score.level === accountData.level) {
-        completedScoreByLevel += 1;
-      }
-    });
+
+    if (scoresByAccount) {
+      scoresByAccount.forEach((score) => {
+        if (score.level === accountData.level) {
+          completedScoreByLevel += 1;
+        }
+      });
+    }
 
     if (accountData.level === 3) {
       if (
