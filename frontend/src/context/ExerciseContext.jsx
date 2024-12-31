@@ -1,13 +1,11 @@
-import axios from "axios";
-import { createContext, useEffect, useState, useContext } from "react";
-import { useNavigate } from "react-router";
-import { AccountContext } from "./AccountContext";
-import { ScoreContext } from "./ScoreContext";
+import axios from 'axios';
+import { createContext, useState, useContext } from 'react';
+import { useNavigate } from 'react-router';
+import { ScoreContext } from './ScoreContext';
 
 export const ExerciseContext = createContext();
 
 export const ExerciseContextProvider = ({ children }) => {
-  const accountContext = useContext(AccountContext);
   const scoreContext = useContext(ScoreContext);
   const [roomData, setRoomData] = useState(null);
   const [exerciseIds, setExerciseIds] = useState([]);
@@ -16,7 +14,7 @@ export const ExerciseContextProvider = ({ children }) => {
 
   const getExercise = async (exerciseId, controller) => {
     if (!exerciseId) {
-      navigate("/");
+      navigate('/');
       return;
     }
     try {
@@ -37,7 +35,7 @@ export const ExerciseContextProvider = ({ children }) => {
 
   const getExerciseIds = async (level, controller) => {
     if (!level) {
-      navigate("/");
+      navigate('/');
       return;
     }
     try {
@@ -99,8 +97,6 @@ export const ExerciseContextProvider = ({ children }) => {
     } finally {
       setIsLoading(false);
     }
-
-    // console.log(exercises);
   };
 
   const values = {
