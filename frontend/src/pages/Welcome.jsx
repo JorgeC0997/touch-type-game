@@ -1,10 +1,10 @@
-import React from "react";
-import Logo from "../components/ui/Logo";
-import LoginForm from "../components/forms/LoginForm";
+import React from 'react';
+import Logo from '../components/ui/Logo';
+import LoginForm from '../components/forms/LoginForm';
 
 const Welcome = () => {
   return (
-    <div className="w-screen h-screen flex justify-center items-center">
+    <div className='w-screen h-screen flex flex-col gap-y-20 justify-center items-center'>
       <Logo />
       <LoginForm />
     </div>
