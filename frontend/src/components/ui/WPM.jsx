@@ -35,7 +35,7 @@ const WPM = ({ totalWPM = 0, size = 'md' }) => {
   return (
     <div className={`relative text-center ${mainstyle}`}>
       <p
-        className={`absolute left-1/2 translate-x-[-50%] font-bold ${scoreStyle} font-pattaya`}
+        className={`absolute left-1/2 translate-x-[-50%] font-bold ${scoreStyle}`}
       >
         {totalWPM}
       </p>
