@@ -1,12 +1,12 @@
-import React, { useContext, useEffect, useState } from "react";
-import { AccountContext } from "../../context/AccountContext";
-import RoundedBadge from "./RoundedBadge";
-import { ScoreContext } from "../../context/ScoreContext";
-import WPM from "./WPM";
-import editIcon from "../../assets/edit_square.svg";
-import ChangeUsernameForm from "../forms/ChangeUsernameForm";
-import ChangePasswordForm from "../forms/ChangePasswordForm";
-import { UserContext } from "../../context/UserContext";
+import React, { useContext, useEffect, useState } from 'react';
+import { AccountContext } from '../../context/AccountContext';
+import RoundedBadge from './RoundedBadge';
+import { ScoreContext } from '../../context/ScoreContext';
+import WPM from './WPM';
+import editIcon from '../../assets/edit_square.svg';
+import ChangeUsernameForm from '../forms/ChangeUsernameForm';
+import ChangePasswordForm from '../forms/ChangePasswordForm';
+import { UserContext } from '../../context/UserContext';
 
 const AccountInfo = () => {
   const userContext = useContext(UserContext);
@@ -16,38 +16,23 @@ const AccountInfo = () => {
   const [showPasswordForm, setShowPasswordFrom] = useState(false);
 
   const badgeContent = accountContext.accountData?.is_super_user
-    ? "superuser"
+    ? 'superuser'
     : accountContext.accountData?.level;
 
-  // const getBgStyles = () => {
-  //   switch (accountContext.accountData?.level) {
-  //     case 1:
-  //       return "bg-amber-600";
-
-  //     case 2:
-  //       return "bg-slate-400";
-
-  //     case 3:
-  //       return "bg-amber-400";
-
-  //     default:
-  //       return "bg-amber-600";
-  //   }
-  // };
   return (
-    <div className="w-full">
+    <div className='w-full'>
       <div
         className={`bg-base-dark p-4 flex justify-center items-center rounded-t-xl text-white`}
       >
         {showUsernameForm ? (
           <ChangeUsernameForm onCancel={() => setShowUsernameForm(false)} />
         ) : (
-          <h1 className="pr-2 text-5xl font-semibold">
+          <h1 className='pr-2 text-5xl font-semibold'>
             {userContext.userData.username}
             <sup>
               <button
                 onClick={() => setShowUsernameForm(true)}
-                className="p-0.5 bg-transparent hover:bg-base-neutral rounded-md"
+                className='p-0.5 bg-transparent hover:bg-base-neutral rounded-md'
               >
                 <img src={editIcon} />
               </button>
@@ -55,22 +40,28 @@ const AccountInfo = () => {
           </h1>
         )}
 
-        <div className="pl-2 border-l border-slate-200 flex flex-col items-center">
-          <div className="p-2 bg-base-neutral flex flex-col justify-center items-center rounded-md shadow-md">
+        <div className='pl-2 border-l border-slate-200 flex flex-col items-center'>
+          <div className='p-2 bg-base-neutral flex flex-col justify-center items-center rounded-md shadow-md'>
             <p>Level</p>
-            <RoundedBadge badgeContent={badgeContent} size="md" />
+            {badgeContent === 'superuser' ? (
+              <p className='px-1 bg-amber-400 border-amber-500 border-2 rounded-md font-bold'>
+                Superuser
+              </p>
+            ) : (
+              <RoundedBadge badgeContent={badgeContent} size='md' />
+            )}
           </div>
-          <WPM totalWPM={scoreContext.highestScore} size="sm" />
+          <WPM totalWPM={scoreContext.highestScore} size='sm' />
         </div>
       </div>
-      <div className="py-4 bg-black/10 w-full flex flex-col justify-center items-center rounded-b-xl text-black">
+      <div className='py-4 bg-black/10 w-full flex flex-col justify-center items-center rounded-b-xl text-black'>
         {showPasswordForm ? (
           <ChangePasswordForm onCancel={() => setShowPasswordFrom(false)} />
         ) : (
           <div>
             <button
-              type="button"
-              className="hover:underline hover:opacity-70"
+              type='button'
+              className='hover:underline hover:opacity-70'
               onClick={() => setShowPasswordFrom(true)}
             >
               Forgot password?
