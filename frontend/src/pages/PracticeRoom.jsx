@@ -1,12 +1,13 @@
-import React, { useState, useEffect, useContext } from "react";
-import { useNavigate, useParams } from "react-router";
-import Char from "../lib/Char.js";
-import { ExerciseContext } from "../context/ExerciseContext";
-import { ModalContext } from "../context/ModalContext.jsx";
-import { AccountContext } from "../context/AccountContext.jsx";
-import { ScoreContext } from "../context/ScoreContext.jsx";
-import RoundedBadge from "../components/ui/RoundedBadge.jsx";
-import WPMBanner from "../components/ui/WPMBanner.jsx";
+import React, { useState, useEffect, useContext } from 'react';
+import { useNavigate, useParams } from 'react-router';
+import Char from '../lib/Char.js';
+import { ExerciseContext } from '../context/ExerciseContext';
+import { ModalContext } from '../context/ModalContext.jsx';
+import { AccountContext } from '../context/AccountContext.jsx';
+import { ScoreContext } from '../context/ScoreContext.jsx';
+import RoundedBadge from '../components/ui/RoundedBadge.jsx';
+import WPMBanner from '../components/ui/WPMBanner.jsx';
+import { excludedKeys } from '../lib/excludedKeys.js';
 
 const PracticeRoom = () => {
   const modalContext = useContext(ModalContext);
@@ -42,7 +43,7 @@ const PracticeRoom = () => {
 
   const generateCharArray = (contentIndex) => {
     setCharArray([]);
-    const str_array = exerciseContext.roomData.content[contentIndex].split("");
+    const str_array = exerciseContext.roomData.content[contentIndex].split('');
 
     let tempCharArray = [];
     str_array.forEach((character, index) => {
@@ -90,27 +91,27 @@ const PracticeRoom = () => {
 
         modalContext.activateModal(() => {
           return (
-            <div className="w-full">
-              <div className="py-4 bg-base-neutral w-full flex flex-col justify-center items-center gap-y-2 text-base-light rounded-tl-2xl rounded-tr-2xl">
-                <div className="flex gap-2">
-                  <h1 className="text-4xl">Exercise:</h1>
+            <div className='w-full'>
+              <div className='py-4 bg-base-neutral w-full flex flex-col justify-center items-center gap-y-2 text-base-light rounded-tl-2xl rounded-tr-2xl'>
+                <div className='flex gap-2'>
+                  <h1 className='text-4xl'>Exercise:</h1>
                   <RoundedBadge
                     badgeContent={exerciseContext.roomData?.exercise_number}
-                    size="lg"
+                    size='lg'
                   />
                 </div>
 
-                <WPMBanner totalWPM={totalWPM} size="lg" />
+                <WPMBanner totalWPM={totalWPM} size='lg' />
                 {/* <p className="text-xl">Words per minute</p>
                 <p className="text-4xl font-semibold">{totalWPM}</p> */}
               </div>
-              <div className="py-4 bg-black/10 w-full flex flex-col justify-center items-center rounded-bl-2xl rounded-br-2xl">
+              <div className='py-4 bg-black/10 w-full flex flex-col justify-center items-center rounded-bl-2xl rounded-br-2xl'>
                 <p>{`Goods: ${goods}`}</p>
                 <p>{`Bads: ${bads}`}</p>
               </div>
             </div>
           );
-        }, "/");
+        }, '/');
       }
     };
 
@@ -131,7 +132,7 @@ const PracticeRoom = () => {
         });
       }
       if (isGameEnded == false) {
-        if (event.key == "Backspace") {
+        if (event.key == 'Backspace') {
           if (pointer > 0) {
             if (history[pointer - 1]) {
               setGoods((prev) => (prev -= 1));
@@ -145,16 +146,16 @@ const PracticeRoom = () => {
           }
         } else {
           if (pointer < charArray.length) {
-            if (event.key != "Shift") {
-              if (event.key == charArray[pointer].character) {
-                setHistory((prev) => [...prev, true]);
-                setGoods((prev) => (prev += 1));
-              } else {
-                setHistory((prev) => [...prev, false]);
-                setBads((prev) => (prev += 1));
-              }
-              setPointer((prev) => (prev += 1));
+            if (excludedKeys.includes(event.key)) return;
+
+            if (event.key == charArray[pointer].character) {
+              setHistory((prev) => [...prev, true]);
+              setGoods((prev) => (prev += 1));
+            } else {
+              setHistory((prev) => [...prev, false]);
+              setBads((prev) => (prev += 1));
             }
+            setPointer((prev) => (prev += 1));
           } else {
             setTimeElapsed((prev) => {
               let newTime = [...prev];
@@ -172,16 +173,16 @@ const PracticeRoom = () => {
       }
     };
 
-    document.addEventListener("keydown", handleKeyPressed);
+    document.addEventListener('keydown', handleKeyPressed);
 
     return () => {
-      document.removeEventListener("keydown", handleKeyPressed);
+      document.removeEventListener('keydown', handleKeyPressed);
     };
   }, [pointer, charArray]);
 
   return (
-    <div className="px-20 h-screen flex justify-center items-center">
-      <p className="text-2xl text-justify">
+    <div className='px-20 h-screen flex justify-center items-center'>
+      <p className='text-2xl text-justify'>
         {charArray.map((charObj, index) => {
           return (
             <span key={index} style={charArray[index].getStyle(pointer, index)}>
