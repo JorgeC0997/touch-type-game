@@ -67,7 +67,7 @@ const PracticeRoom = () => {
         setTimeElapsed([0, 0]);
         setHistory([]);
         setPointer(0);
-        // let totalWords = 112 / 5;
+        setGoods(0);
       }
 
       if (isGameEnded) {
@@ -79,13 +79,6 @@ const PracticeRoom = () => {
         totalWPM = Math.round(
           totalWPM / exerciseContext.roomData.content.length
         );
-
-        // const isNewRecord = await scoreContext.checkNewScore(
-        //   accountContext.accountData.id,
-        //   exerciseContext.roomData.id,
-        //   totalWPM,
-        //   controller
-        // );
 
         accountContext.levelUp(scoreContext.scoresByAccount);
 
@@ -102,8 +95,6 @@ const PracticeRoom = () => {
                 </div>
 
                 <WPMBanner totalWPM={totalWPM} size='lg' />
-                {/* <p className="text-xl">Words per minute</p>
-                <p className="text-4xl font-semibold">{totalWPM}</p> */}
               </div>
               <div className='py-4 bg-black/10 w-full flex flex-col justify-center items-center rounded-bl-2xl rounded-br-2xl'>
                 <p>{`Goods: ${goods}`}</p>
@@ -181,7 +172,16 @@ const PracticeRoom = () => {
   }, [pointer, charArray]);
 
   return (
-    <div className='px-20 h-screen flex justify-center items-center'>
+    <div className='px-[20%] pt-28 h-screen flex flex-col justify-start items-center gap-y-52'>
+      <div>
+        <div className='text-center'>
+          <p className='text-sm text-white/60'>level : exercise</p>
+          <h2 className='text-9xl text-white/90 font-semibold'>
+            {`${exerciseContext.roomData?.level} : ${exerciseContext.roomData?.exercise_number}`}
+          </h2>
+        </div>
+        <p>{`${goods} / ${exerciseContext.roomData?.char_length[contentIndex]}`}</p>
+      </div>
       <p className='text-2xl text-justify'>
         {charArray.map((charObj, index) => {
           return (
