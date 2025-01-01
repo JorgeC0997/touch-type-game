@@ -22,6 +22,7 @@ const PracticeRoom = () => {
   const [isGameEnded, setIsGameEnded] = useState(false);
   const [timeElapsed, setTimeElapsed] = useState([0, 0]);
   const [charArray, setCharArray] = useState([]);
+  const [totalCorrectCharTyped, setTotalCorrectCharTyped] = useState(0);
 
   const [wpmArray, setWpmArray] = useState([]);
   const [contentIndex, setContentIndex] = useState(0);
@@ -59,7 +60,8 @@ const PracticeRoom = () => {
     const storeGameData = async () => {
       if (timeElapsed[0] > 0) {
         let minutes = (timeElapsed[1] - timeElapsed[0]) / 60;
-        let totalWords = charArray.length / 5;
+        // let totalWords = charArray.length / 5;
+        let totalWords = goods / 5;
         const WPM = Math.round(totalWords / minutes);
         setWpmArray((prev) => {
           return [...prev, WPM];
@@ -97,8 +99,8 @@ const PracticeRoom = () => {
                 <WPMBanner totalWPM={totalWPM} size="lg" />
               </div>
               <div className="py-4 bg-black/10 w-full flex flex-col justify-center items-center rounded-bl-2xl rounded-br-2xl">
-                <p>{`Goods: ${goods}`}</p>
-                <p>{`Bads: ${bads}`}</p>
+                <p>{`Correct Characters Total: ${totalCorrectCharTyped}`}</p>
+                <p>{`Incorrect Characters Total: ${bads}`}</p>
               </div>
             </div>
           );
@@ -127,6 +129,7 @@ const PracticeRoom = () => {
           if (pointer > 0) {
             if (history[pointer - 1]) {
               setGoods((prev) => (prev -= 1));
+              setTotalCorrectCharTyped((prev) => (prev -= 1));
             } else {
               setBads((prev) => (prev -= 1));
             }
@@ -142,6 +145,7 @@ const PracticeRoom = () => {
             if (event.key == charArray[pointer].character) {
               setHistory((prev) => [...prev, true]);
               setGoods((prev) => (prev += 1));
+              setTotalCorrectCharTyped((prev) => (prev += 1));
             } else {
               setHistory((prev) => [...prev, false]);
               setBads((prev) => (prev += 1));
