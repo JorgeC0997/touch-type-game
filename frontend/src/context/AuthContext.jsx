@@ -7,10 +7,8 @@ export const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
   const userContext = useContext(UserContext);
-  // const [userData, setUserData] = useState(null);
   const [isUserAuth, setIsUserAuth] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation();
 
   const loginUser = async (username, password) => {
     try {
@@ -25,13 +23,11 @@ export const AuthContextProvider = ({ children }) => {
         }
       );
       if (data) {
-        // setUserData(data);
         userContext.setUserDataState(data);
         setIsUserAuth(true);
         navigate("/");
         return true;
       } else {
-        // setUserData(null);
         userContext.setUserDataState(null);
         setIsUserAuth(false);
         navigate("/welcome");
@@ -54,7 +50,6 @@ export const AuthContextProvider = ({ children }) => {
 
       if (response.status === 200) {
         setIsUserAuth(false);
-        // setUserData({});
         userContext.setUserDataState({});
         verifyUserAuth(new AbortController());
       }
@@ -79,7 +74,6 @@ export const AuthContextProvider = ({ children }) => {
           { withCredentials: true }
         );
         if (status === 200) {
-          // setUserData({ id: data.id, username: data.username });
           userContext.setUserDataState({
             id: data.id,
             username: data.username,
@@ -97,30 +91,6 @@ export const AuthContextProvider = ({ children }) => {
     }
   };
 
-  // const updateUserData = async ({ username = null, password = null } = {}) => {
-  //   if (!username && !password) return;
-
-  //   if (username === userData.username) return;
-  //   try {
-  //     const { data } = await axios.patch(
-  //       `http://localhost:3001/api/users/${userData?.id}`,
-  //       {
-  //         username,
-  //         password,
-  //       },
-  //       {
-  //         withCredentials: true,
-  //       }
-  //     );
-
-  //     if (data) {
-  //       setUserData(data);
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
   useEffect(() => {
     const controller = new AbortController();
     verifyUserAuth(controller);
@@ -131,14 +101,11 @@ export const AuthContextProvider = ({ children }) => {
   }, []);
 
   const values = {
-    // userData,
-    // setUserData,
     isUserAuth,
     setIsUserAuth,
     loginUser,
     logoutUser,
     verifyUserAuth,
-    // updateUserData,
   };
   return <AuthContext.Provider value={values}>{children}</AuthContext.Provider>;
 };
