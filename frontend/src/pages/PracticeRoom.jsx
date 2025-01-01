@@ -1,13 +1,13 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { useNavigate, useParams } from 'react-router';
-import Char from '../lib/Char.js';
-import { ExerciseContext } from '../context/ExerciseContext';
-import { ModalContext } from '../context/ModalContext.jsx';
-import { AccountContext } from '../context/AccountContext.jsx';
-import { ScoreContext } from '../context/ScoreContext.jsx';
-import RoundedBadge from '../components/ui/RoundedBadge.jsx';
-import WPMBanner from '../components/ui/WPMBanner.jsx';
-import { excludedKeys } from '../lib/excludedKeys.js';
+import React, { useState, useEffect, useContext } from "react";
+import { useNavigate, useParams } from "react-router";
+import Char from "../lib/Char.js";
+import { ExerciseContext } from "../context/ExerciseContext";
+import { ModalContext } from "../context/ModalContext.jsx";
+import { AccountContext } from "../context/AccountContext.jsx";
+import { ScoreContext } from "../context/ScoreContext.jsx";
+import RoundedBadge from "../components/ui/RoundedBadge.jsx";
+import WPMBanner from "../components/ui/WPMBanner.jsx";
+import { excludedKeys } from "../lib/excludedKeys.js";
 
 const PracticeRoom = () => {
   const modalContext = useContext(ModalContext);
@@ -43,7 +43,7 @@ const PracticeRoom = () => {
 
   const generateCharArray = (contentIndex) => {
     setCharArray([]);
-    const str_array = exerciseContext.roomData.content[contentIndex].split('');
+    const str_array = exerciseContext.roomData.content[contentIndex].split("");
 
     let tempCharArray = [];
     str_array.forEach((character, index) => {
@@ -84,25 +84,25 @@ const PracticeRoom = () => {
 
         modalContext.activateModal(() => {
           return (
-            <div className='w-full'>
-              <div className='py-4 bg-base-neutral w-full flex flex-col justify-center items-center gap-y-2 text-base-light rounded-tl-2xl rounded-tr-2xl'>
-                <div className='flex gap-2'>
-                  <h1 className='text-4xl'>Exercise:</h1>
+            <div className="w-full">
+              <div className="py-4 bg-base-neutral w-full flex flex-col justify-center items-center gap-y-2 text-base-light rounded-tl-2xl rounded-tr-2xl">
+                <div className="flex gap-2">
+                  <h1 className="text-4xl">Exercise:</h1>
                   <RoundedBadge
                     badgeContent={exerciseContext.roomData?.exercise_number}
-                    size='lg'
+                    size="lg"
                   />
                 </div>
 
-                <WPMBanner totalWPM={totalWPM} size='lg' />
+                <WPMBanner totalWPM={totalWPM} size="lg" />
               </div>
-              <div className='py-4 bg-black/10 w-full flex flex-col justify-center items-center rounded-bl-2xl rounded-br-2xl'>
+              <div className="py-4 bg-black/10 w-full flex flex-col justify-center items-center rounded-bl-2xl rounded-br-2xl">
                 <p>{`Goods: ${goods}`}</p>
                 <p>{`Bads: ${bads}`}</p>
               </div>
             </div>
           );
-        }, '/');
+        }, "/");
       }
     };
 
@@ -123,7 +123,7 @@ const PracticeRoom = () => {
         });
       }
       if (isGameEnded == false) {
-        if (event.key == 'Backspace') {
+        if (event.key == "Backspace") {
           if (pointer > 0) {
             if (history[pointer - 1]) {
               setGoods((prev) => (prev -= 1));
@@ -164,25 +164,25 @@ const PracticeRoom = () => {
       }
     };
 
-    document.addEventListener('keydown', handleKeyPressed);
+    document.addEventListener("keydown", handleKeyPressed);
 
     return () => {
-      document.removeEventListener('keydown', handleKeyPressed);
+      document.removeEventListener("keydown", handleKeyPressed);
     };
   }, [pointer, charArray]);
 
   return (
-    <div className='px-[20%] pt-28 h-screen flex flex-col justify-start items-center gap-y-52'>
-      <div>
-        <div className='text-center'>
-          <p className='text-sm text-white/60'>level : exercise</p>
-          <h2 className='text-9xl text-white/90 font-semibold'>
+    <div className="px-[20%] pt-28 h-screen flex flex-col justify-start items-center gap-y-32">
+      <div className="flex flex-col gap-14">
+        <div className="text-center">
+          <p className="text-sm text-white/60">level : exercise</p>
+          <h2 className="text-9xl text-white/90 font-semibold">
             {`${exerciseContext.roomData?.level} : ${exerciseContext.roomData?.exercise_number}`}
           </h2>
         </div>
-        <p>{`${goods} / ${exerciseContext.roomData?.char_length[contentIndex]}`}</p>
+        <p className="text-center text-2xl font-semibold text-white/80">{`${goods} / ${exerciseContext.roomData?.char_length[contentIndex]}`}</p>
       </div>
-      <p className='text-2xl text-justify'>
+      <p className="text-2xl text-justify">
         {charArray.map((charObj, index) => {
           return (
             <span key={index} style={charArray[index].getStyle(pointer, index)}>
