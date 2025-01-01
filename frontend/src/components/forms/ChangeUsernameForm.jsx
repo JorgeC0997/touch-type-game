@@ -26,7 +26,6 @@ const ChangeUsernameForm = ({ onCancel }) => {
           setInputError(true);
         } else {
           setUsername("");
-          setPassword("");
           setInputError(false);
           onCancel();
         }
