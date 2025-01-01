@@ -21,7 +21,6 @@ const WPMBanner = ({ totalWPM = 0 }) => {
         totalWPM,
         controller
       );
-      console.log(newRecord);
       setIsNewRecord(newRecord);
     };
 
