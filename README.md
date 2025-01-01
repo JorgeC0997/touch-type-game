@@ -4,26 +4,26 @@
 
 ## Description
 
-Touch Type is a web application designed for those who want to improve their typing skills.  
-Packed with 28 exercises distributed into three levels of difficulty, Touch Type keeps track of  
-your acomplishements saving the highest amount of words per minute (WPM) typed during the game.
+Touch Type is a web application designed for those who want to improve their typing skills.\
+Packed with 28 exercises distributed into three levels of difficulty, Touch Type keeps track of your\
+accomplishments, saving the highest number of words per minute (WPM) typed during the game.
 
-When completing all exercises of each level, **you level up!** and Touch Type will upgrade your account  
-grating you access to a new set of exercises more dificult to type. Happy typing!
+When completing all exercises of each level, **you level up!** Touch Type will upgrade your account,\
+granting you access to a new set of exercises that are more difficult to type. Happy typing!
 
 ### Backend
 
-The backend uses Express to create a RESTful API with a MVC architecture that allows developers\
+The backend uses Express to create a RESTful API with an MVC architecture that allows developers\
 a faster way to create and maintain API endpoints. The following image illustrates the file structure\
 inside the backend folder.
 
 ![Backend file structure](/screenshots/backend_src_structure.png)
 
-All global vairables are defined in the .config file, in here you can find the environment variables that holds\
-sencitive information to connect to the database.
+All global variables are defined in the .config file. Here, you can find the environment variables that hold\
+sensitive information to connect to the database.
 
-The dbConnection.js file exports a new instance of the Pool Object from the 'pg' library, inside that pool\
-instance we configure all properties to connect to our dabatase.
+The dbConnection.js file exports a new instance of the Pool object from the 'pg' library. Inside that pool\
+instance, we configure all properties to connect to our database.
 
 ```
 export const pool = new Pool({
@@ -46,10 +46,10 @@ app.use("/api/exercises", requireAuth, exercisesRoutes);
 app.use("/api/scores", requireAuth, scoresRoutes);
 ```
 
-We use the requireAuth middleware to ensure that the incoming request have the right credentials to get access.\
-The routing files contains controller methods that sends query commands to the database server and those\
-controller methods sends back the response with data to the client or error messages if something goes wrong\
-with re request parameters or the server.
+We use the requireAuth middleware to ensure that the incoming request has the correct credentials to gain access.\
+The routing files contain controller methods that send query commands to the database server, and those\
+controller methods send back responses with data to the client or error messages if something goes wrong\
+with the request parameters or the server.
 
 Example from **accounts.routes.js**:
 
@@ -108,6 +108,49 @@ as they can completing milestones and breaking personal records.
 
 ![Practice Room page](/screenshots/practice_room_page.jpg)
 
+This last page uses a class object "**_Char_**", this object represent a character and contains methods to\
+change its style. The next set of pictures represent each style that this object can have:
+
+![Char default](/screenshots/char_default.png) ![Char active](/screenshots/char_active.png)
+![Char correct](/screenshots/char_correct.png) ![Char incorrect](/screenshots/char_incorrect.png)
+
+With this in mind, the app takes the exercise string from the database and generates a character array\
+full of this Char objects, ready to change the styling.
+
+A "*pointer*" state is being used in multiple parts of the "**_PracticeRoom_**" component. Its main function is to\
+hold the index of the current character to make the validation and determine if the user typed the right character\
+
+```
+if (pointer < charArray.length) {
+  if (excludedKeys.includes(event.key)) return;
+
+  if (event.key == charArray[pointer].character) {
+    setHistory((prev) => [...prev, true]);
+    setGoods((prev) => (prev += 1));
+  } else {
+    setHistory((prev) => [...prev, false]);
+    setBads((prev) => (prev += 1));
+  }
+  setPointer((prev) => (prev += 1));
+} else {
+  setTimeElapsed((prev) => {
+    let newTime = [...prev];
+    newTime[1] = Math.floor(Date.now() / 1000);
+    return newTime;
+  });
+  if (contentIndex < exerciseContext.roomData.content.length - 1) {
+    setContentIndex(contentIndex + 1);
+    setIsGameEnded(false);
+  } else {
+    setIsGameEnded(true);
+  }
+}
+```
+
+Before the key validation, the app checks if the key pressed is in a exclusion array. This array\
+is called *excludedKeys* and contains all unwanted keys that we don't want to be validated.
+
+> **E.g.** ['Shift', 'Tab', 'CapsLock', 'Control', 'Alt', 'ArrowUp', etc...]
 
 This application uses **React Context** that allows us to share state and data across multiple\
 components without having to pass props down through every level of the component tree avoiding\
@@ -126,10 +169,14 @@ or delete data in our backend api.
 
 * #### AuthContext
 
-&nbsp; &nbsp; &nbsp; &nbsp; The AuthContext file is key to ensure that the app can log in, log out and verify user's credentials.\
-&nbsp; &nbsp; &nbsp; &nbsp; AuthContext have only one boolean state "**isUserAuth**" that will change upon loging in or loging out\
-&nbsp; &nbsp; &nbsp; &nbsp; the user. It also uses userContext to change the "**userData**" state to save the response that we get\
-&nbsp; &nbsp; &nbsp; &nbsp; back from the login api endpoint (id, username):
+&nbsp; &nbsp; &nbsp; &nbsp; The AuthContext file is key to ensuring that the app can log in, log out, and verify user credentials.\
+&nbsp; &nbsp; &nbsp; &nbsp; AuthContext has only one boolean state, "**isUserAuth**", which changes upon logging in or logging out\
+&nbsp; &nbsp; &nbsp; &nbsp; the user. It also uses userContext to change the "**userData**" state to save the response we get\
+&nbsp; &nbsp; &nbsp; &nbsp; back from the login API endpoint (e.g., ID, username):
+
+&nbsp; &nbsp; &nbsp; &nbsp; When logging in users, the API issues a **JWT** (JSON Web Token) with an expiration duration of 1 hour.\
+&nbsp; &nbsp; &nbsp; &nbsp; This **JWT** is sent as an HTTP-only cookie, so it cannot be accessed with JavaScript. This way, the app verifies\
+&nbsp; &nbsp; &nbsp; &nbsp; if the user is authenticated and grants access to protected routes in the front end
 
 ```
 const loginUser = async (username, password) => {
@@ -161,10 +208,10 @@ const loginUser = async (username, password) => {
 
 
 &nbsp; &nbsp; &nbsp; &nbsp; For the logout function, because we are using JWT (JSON Web Token) to authorize users to\
-&nbsp; &nbsp; &nbsp; &nbsp; certain pages in our app, when loging out, the api endpint will issue a new JWT on a http only\
-&nbsp; &nbsp; &nbsp; &nbsp; cookie with a very short expritation date; after the token expires, the app will verify if\
-&nbsp; &nbsp; &nbsp; &nbsp; there is a valid token and allow access to those pages where no authorization is required in\
-&nbsp; &nbsp; &nbsp; &nbsp; the case of not being loged in like **Welcome** and **Register** pages.
+&nbsp; &nbsp; &nbsp; &nbsp; certain pages in our app, when logging out, the API endpoint issues a new JWT on an HTTP-only\
+&nbsp; &nbsp; &nbsp; &nbsp; cookie with a very short expiration date. After the token expires, the app verifies if\
+&nbsp; &nbsp; &nbsp; &nbsp; there is a valid token and allows access to pages where no authorization is required,\
+&nbsp; &nbsp; &nbsp; &nbsp; such as the **Welcome** and **Register** pages, in the case of not being logged in.
 
 ```
 const logoutUser = async () => {
@@ -599,6 +646,14 @@ const hideModal = () => {
 };
 ```
 
+## Future Improvements
+
+* Add more loading screens while waiting for api data.
+* Implement a better Error handling in forms.
+* Improve error handling for api responses.
+* Add "forgot password?" to login form.
+
+
 
 ## Project Installation
 
@@ -647,7 +702,7 @@ Change directory from **...\touch-type-game>** to **...\touch-type-game\backend>
 
 Run the following command to restore the newly created database with all tables required for the app to run:
 
-> **_NOTE:_**   The command line will prompt you for postgres password, use the same password you used to connect to the postgers\
+> **_NOTE:_**   The command line will prompt you for postgres password, use the same password you used to connect to the postgres\
 >server previously.
 
 `pg_restore -U postgres -Ft -d touch_type < ./db_backup/touch_type.tar`
