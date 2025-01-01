@@ -1,5 +1,5 @@
-import { createContext, useState } from 'react';
-import axios from 'axios';
+import { createContext, useState } from "react";
+import axios from "axios";
 
 export const UserContext = createContext();
 
@@ -10,15 +10,15 @@ export const UserContextProvider = ({ children }) => {
     if (data === null) return setUserData(null);
 
     const keys = Object.keys(data);
-    if (!keys.includes('id') || !keys.includes('username')) return;
-    if (data.id === '' || data.username === '') return;
+    if (!keys.includes("id") || !keys.includes("username")) return;
+    if (data.id === "" || data.username === "") return;
 
     setUserData(data);
   };
 
   const createUser = async (username, password) => {
     try {
-      const response = await axios.post('http://localhost:3001/api/users', {
+      const response = await axios.post("http://localhost:3001/api/users", {
         username,
         password,
       });
