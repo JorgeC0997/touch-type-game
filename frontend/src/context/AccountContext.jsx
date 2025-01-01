@@ -108,12 +108,10 @@ export const AccountContextProvider = ({ children }) => {
       const levelUpStatus = await updateLevel(newLevel, accountData.id);
       if (levelUpStatus) {
         getAccountData(userContext.userData.id, new AbortController());
-        console.log("You leveled up!");
       } else {
         console.log("Couldn't update account level");
       }
     }
-    console.log(scoresByAccount);
   };
 
   useEffect(() => {
