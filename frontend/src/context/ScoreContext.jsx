@@ -9,6 +9,7 @@ export const ScoreContextProvider = ({ children }) => {
   const [scoresByAccount, setScoresByAccount] = useState(null);
   const [highestScore, setHighestScore] = useState(0);
 
+  // Get all scores attached to the current user account
   const getScoresByAccount = async (controller) => {
     if (!accountContext.accountData) return;
     try {
@@ -28,6 +29,7 @@ export const ScoreContextProvider = ({ children }) => {
     }
   };
 
+  // Update score with new high score in db
   const checkNewScore = async (accountId, exerciseId, score, controller) => {
     try {
       const response = await axios.patch(
@@ -48,6 +50,7 @@ export const ScoreContextProvider = ({ children }) => {
         return false;
       }
 
+      // Retrieve the scores with the new data if new high score was successfully saved.
       getScoresByAccount(new AbortController());
       return true;
     } catch (error) {
@@ -56,6 +59,7 @@ export const ScoreContextProvider = ({ children }) => {
     }
   };
 
+  // Set highest score among all user's scores
   const getHighestScore = async () => {
     if (!scoresByAccount) return;
 
@@ -69,6 +73,7 @@ export const ScoreContextProvider = ({ children }) => {
     setHighestScore(highest);
   };
 
+  // Retrieve scores by user's account every time accountData state changes
   useEffect(() => {
     const controller = new AbortController();
     getScoresByAccount(controller);
@@ -78,6 +83,7 @@ export const ScoreContextProvider = ({ children }) => {
     };
   }, [accountContext.accountData]);
 
+  // Re-run getHighestScore every time we get a new score
   useEffect(() => {
     getHighestScore();
   }, [scoresByAccount]);

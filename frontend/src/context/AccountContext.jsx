@@ -10,6 +10,7 @@ export const AccountContextProvider = ({ children }) => {
   const [accountData, setAccountData] = useState(null);
   const userContext = useContext(UserContext);
 
+  // Fetch account data by user id
   const getAccountData = async (userId, controller) => {
     try {
       const { data } = await axios.get(
@@ -19,14 +20,18 @@ export const AccountContextProvider = ({ children }) => {
           signal: controller.signal,
         }
       );
+
+      // save data if successful
       if (data) {
         setAccountData(data);
       }
     } catch (error) {
       console.log(error);
+      // TODO: we should render a message box with red background indicating "could not retrieve account data"
     }
   };
 
+  // Update account level
   const updateLevel = async (new_level, account_id) => {
     try {
       const response = await axios.patch(
@@ -40,6 +45,8 @@ export const AccountContextProvider = ({ children }) => {
         }
       );
 
+      // FIXME: we might not need this because will bi catched down below
+      // return early if we have a bad satus code
       if (response.status === 401) {
         return false;
       }
@@ -50,6 +57,7 @@ export const AccountContextProvider = ({ children }) => {
     }
   };
 
+  // Set superuser boolean state in db
   const setSuperuser = async (account_id) => {
     try {
       const response = await axios.patch(
@@ -63,6 +71,7 @@ export const AccountContextProvider = ({ children }) => {
         }
       );
 
+      // FIXME: this can get catch down below
       if (response.status === 401) {
         return false;
       }
@@ -73,11 +82,16 @@ export const AccountContextProvider = ({ children }) => {
     }
   };
 
+  // We get all scores by account as a parameter
   const levelUp = async (scoresByAccount) => {
+    // Declare total count of exercises by level.
     const levelExerciseCount = [10, 10, 8];
+
     let completedScoreByLevel = 0;
 
     if (scoresByAccount) {
+      // count number of exercises that user have completed that are
+      // in the same level that user's account
       scoresByAccount.forEach((score) => {
         if (score.level === accountData.level) {
           completedScoreByLevel += 1;
@@ -86,6 +100,9 @@ export const AccountContextProvider = ({ children }) => {
     }
 
     if (accountData.level === 3) {
+      // Set user user status to true and update Account Context
+      // if the total amount of completed exercises are equal to
+      // the count of exercises in database
       if (
         completedScoreByLevel ===
         levelExerciseCount[accountData.level - 1] - 1
@@ -100,6 +117,7 @@ export const AccountContextProvider = ({ children }) => {
       }
     }
 
+    // if current account's level isn't 3, we simply upgrade to next level
     if (
       completedScoreByLevel ===
       levelExerciseCount[accountData.level - 1] - 1
@@ -110,10 +128,12 @@ export const AccountContextProvider = ({ children }) => {
         getAccountData(userContext.userData.id, new AbortController());
       } else {
         console.log("Couldn't update account level");
+        // TODO: throw error in navbar
       }
     }
   };
 
+  // Get account's data every time userData changes
   useEffect(() => {
     const controller = new AbortController();
     if (userContext.userData) {
