@@ -5,9 +5,13 @@ import RoundedBadge from "./RoundedBadge";
 
 const UserLogo = () => {
   const accountContext = useContext(AccountContext);
+
+  // Save the accounts level or superuser to be displayed in the badge component
   let badgeContent = accountContext.accountData?.is_super_user
     ? "superuser"
     : accountContext.accountData?.level;
+
+  // Set styles to account button based on account's level
   const getBgStyles = () => {
     switch (accountContext.accountData?.level) {
       case 1:
@@ -23,6 +27,7 @@ const UserLogo = () => {
         return "bg-amber-600";
     }
   };
+
   return (
     <div
       className={`${getBgStyles()} border-2 rounded-md text-white flex justify-center items-center`}

@@ -11,9 +11,13 @@ const WPMBanner = ({ totalWPM = 0 }) => {
   const scoreContext = useContext(ScoreContext);
   const [isNewRecord, setIsNewRecord] = useState(false);
 
+  // Trigger this effect every time totalWPM changes
   useEffect(() => {
     if (totalWPM === 0) return;
+
     const controller = new AbortController();
+
+    // Set new record if totalWPM is greater than the current higest score in db
     const checkNewRecord = async () => {
       const newRecord = await scoreContext.checkNewScore(
         accountContext.accountData.id,
@@ -31,6 +35,7 @@ const WPMBanner = ({ totalWPM = 0 }) => {
     };
   }, [totalWPM]);
 
+  // Show new record ribbon component if new record
   if (isNewRecord) {
     return <RibbonSign score={totalWPM} />;
   }

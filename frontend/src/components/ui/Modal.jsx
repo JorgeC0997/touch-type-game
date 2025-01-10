@@ -14,6 +14,7 @@ const Modal = ({ children }) => {
           <PrimaryButton
             action={() => {
               modalContext.hideModal();
+              // redirect on close if redirectUrl was provided
               if (modalContext.redirectUrl) {
                 navigate(modalContext.redirectUrl);
               }

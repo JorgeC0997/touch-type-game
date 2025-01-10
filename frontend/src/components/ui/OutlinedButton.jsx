@@ -7,6 +7,8 @@ const OutlinedButton = ({
   theme = "light",
 }) => {
   let btnStyles = "";
+
+  // Change button styles based on theme provided
   switch (theme) {
     case "light":
       btnStyles = "text-gray-800 border-gray-500";

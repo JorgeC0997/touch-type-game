@@ -6,6 +6,8 @@ import WPM from "./WPM";
 const RoomItem = ({ room, arrow = true, isUnlocked }) => {
   return (
     <li className={`flex items-center ${isUnlocked === false && "opacity-40"}`}>
+      {/* If exercise is unlocked, render a link with corresponding path otherwise render a span*/}
+      {/* so user cannot interact with the component in any way */}
       {isUnlocked ? (
         <Link
           to={`/room/${room.id}`}
