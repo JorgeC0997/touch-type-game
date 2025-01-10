@@ -15,16 +15,22 @@ const ChangeUsernameForm = ({ onCancel }) => {
       onSubmit={async (e) => {
         e.preventDefault();
 
+        // Hide the form if username entered is empty or if the username entered
+        // is the same as current username.
         if (username === "" || username === userContext.userData?.username)
           return onCancel();
 
+        // Await the update dunction to set the new userame
+        // if successful, return true.
         const isDataChanged = await userContext.updateUserData({
           username: username,
         });
 
+        // Show error if username couldn't be saved in db
         if (!isDataChanged) {
           setInputError(true);
         } else {
+          // if dataChanged is true: reset all states and hide the form.
           setUsername("");
           setInputError(false);
           onCancel();

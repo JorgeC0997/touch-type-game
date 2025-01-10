@@ -19,19 +19,25 @@ const ChangePasswordForm = ({ onCancel }) => {
       onSubmit={async (e) => {
         e.preventDefault();
 
+        // Show error if passwords don't match
         if (newPassword !== newPasswordConfirm) {
           setErrorMessage("Both password fields must match");
           return setInputError(true);
         }
 
+        // Await the update dunction to set the new password
+        // if successful, return true.
         const isDataChanged = await userContext.updateUserData({
           password: newPassword,
         });
 
+        // Show error if password couldn't be saved in db
         if (!isDataChanged) {
           setInputError(true);
           setErrorMessage("Invalid password");
         } else {
+          // if dataChanged is true: reset all states, hide the form, close the modal
+          // and logout the user to login with the new password
           setNewPassword("");
           setNewPasswordConfirm("");
           setErrorMessage("");

@@ -11,10 +11,15 @@ const LoginForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // await the login function with username and password as parguments needed
     const isUserLoggedin = await authContext.loginUser(username, password);
+
+    // Show error if server responded with an error
     if (!isUserLoggedin) {
       setInputError(true);
     } else {
+      // Reset all state if successful
       setUsername("");
       setPassword("");
       setInputError(false);
