@@ -60,8 +60,8 @@ const PracticeRoom = () => {
     const storeGameData = async () => {
       if (timeElapsed[0] > 0) {
         let minutes = (timeElapsed[1] - timeElapsed[0]) / 60;
-        // let totalWords = charArray.length / 5;
-        let totalWords = goods / 5;
+        let totalWords = charArray.length / 5;
+        // let totalWords = goods / 5;
         const WPM = Math.round(totalWords / minutes);
         setWpmArray((prev) => {
           return [...prev, WPM];
@@ -131,7 +131,7 @@ const PracticeRoom = () => {
               setGoods((prev) => (prev -= 1));
               setTotalCorrectCharTyped((prev) => (prev -= 1));
             } else {
-              setBads((prev) => (prev -= 1));
+              // setBads((prev) => (prev -= 1));
             }
             const newHistoryArray = [...history];
             newHistoryArray.pop();
@@ -147,8 +147,12 @@ const PracticeRoom = () => {
               setGoods((prev) => (prev += 1));
               setTotalCorrectCharTyped((prev) => (prev += 1));
             } else {
-              setHistory((prev) => [...prev, false]);
-              setBads((prev) => (prev += 1));
+              // setHistory((prev) => [...prev, false]);
+              // setBads((prev) => (prev += 1));
+              // -----------
+              setHistory((prev) => [...prev, true]);
+              setGoods((prev) => (prev += 1));
+              setTotalCorrectCharTyped((prev) => (prev += 1));
             }
             setPointer((prev) => (prev += 1));
           } else {

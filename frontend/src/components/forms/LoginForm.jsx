@@ -2,28 +2,19 @@ import React, { useState, useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import StyledInput from "../ui/StyledInput";
 import PrimaryButton from "../ui/PrimaryButton";
+import { NotificationContext } from "../../context/NotificationContext";
 
 const LoginForm = () => {
+  const notificationContext = useContext(NotificationContext);
   const authContext = useContext(AuthContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [inputError, setInputError] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     // await the login function with username and password as parguments needed
-    const isUserLoggedin = await authContext.loginUser(username, password);
-
-    // Show error if server responded with an error
-    if (!isUserLoggedin) {
-      setInputError(true);
-    } else {
-      // Reset all state if successful
-      setUsername("");
-      setPassword("");
-      setInputError(false);
-    }
+    await authContext.loginUser(username, password);
   };
   return (
     <form
@@ -34,22 +25,20 @@ const LoginForm = () => {
       <StyledInput
         type="text"
         placeholder="User Name"
-        errorState={inputError}
+        errorState={notificationContext.type === "error" ? true : false}
         onChange={(e) => {
           setUsername(e.target.value);
-          if (inputError) setInputError(false);
         }}
       />
       <StyledInput
         type="password"
         placeholder="Password"
-        errorState={inputError}
+        errorState={notificationContext.type === "error" ? true : false}
         onChange={(e) => {
           setPassword(e.target.value);
-          if (inputError) setInputError(false);
         }}
       />
-      {inputError && (
+      {notificationContext.type === "error" && (
         <p className="text-white text-sm">*Username and/or password is wrong</p>
       )}
       <PrimaryButton legend="Log in" />

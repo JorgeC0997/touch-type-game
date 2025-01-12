@@ -1,12 +1,13 @@
 import { createContext, useEffect, useState } from "react";
 import { useContext } from "react";
-import { AuthContext } from "./AuthContext";
 import axios from "axios";
 import { UserContext } from "./UserContext";
+import { NotificationContext } from "./NotificationContext";
 
 export const AccountContext = createContext();
 
 export const AccountContextProvider = ({ children }) => {
+  const notificationContext = useContext(NotificationContext);
   const [accountData, setAccountData] = useState(null);
   const userContext = useContext(UserContext);
 
@@ -110,6 +111,11 @@ export const AccountContextProvider = ({ children }) => {
         const superuserStatus = await setSuperuser(accountData.id);
         if (superuserStatus) {
           getAccountData(userContext.userData.id, new AbortController());
+          // Show message in navbar
+          notificationContext.notify({
+            msg: "You're Super User now!",
+            delay: 5000,
+          });
           return console.log("You're Super User now!");
         } else {
           return console.log("Couldn't update account superuser");

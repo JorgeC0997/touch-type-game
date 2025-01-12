@@ -4,8 +4,11 @@ import { AuthContext } from "../../context/AuthContext";
 import { ModalContext } from "../../context/ModalContext";
 import AccountInfo from "../ui/AccountInfo";
 import UserLogo from "../ui/UserLogo";
+import NotificationBox from "../ui/NotificationBox";
+import { NotificationContext } from "../../context/NotificationContext";
 
 const NavBar = () => {
+  const notificationContext = useContext(NotificationContext);
   const authContext = useContext(AuthContext);
   const modalContext = useContext(ModalContext);
 
@@ -21,6 +24,14 @@ const NavBar = () => {
       <Link to="/">
         <p className="my-auto h-auto text-lg font-righteous">Touch Type _</p>
       </Link>
+
+      {notificationContext.message && (
+        <NotificationBox
+          message={notificationContext.message}
+          type={notificationContext.type}
+          duration={notificationContext.duration}
+        />
+      )}
 
       {authContext.isUserAuth ? (
         <ul className="flex gap-x-4">

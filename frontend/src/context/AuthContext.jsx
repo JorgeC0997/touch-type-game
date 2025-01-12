@@ -1,11 +1,13 @@
 import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router";
+import { useNavigate } from "react-router";
 import { UserContext } from "./UserContext";
+import { NotificationContext } from "./NotificationContext";
 
 export const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
+  const notificationContext = useContext(NotificationContext);
   const userContext = useContext(UserContext);
   const [isUserAuth, setIsUserAuth] = useState(false);
   const navigate = useNavigate();
@@ -35,19 +37,27 @@ export const AuthContextProvider = ({ children }) => {
       if (data) {
         userContext.setUserDataState(data);
         setIsUserAuth(true);
+        notificationContext.clearNotification();
+        notificationContext.notify({
+          msg: `Welcome, ${data.username}`,
+          delay: 3000,
+        });
         navigate("/");
-        return true;
       } else {
         // for safety, if data attribute is empty, we set everything to default state
         // and redirect to Welcome page
         userContext.setUserDataState(null);
+        notificationContext.clearNotification();
         setIsUserAuth(false);
         navigate("/welcome");
-        return false;
       }
     } catch (error) {
-      console.error(error);
-      return false;
+      // In case of error, trigger the notification box with message from api
+      notificationContext.notify({
+        msg: error.response?.data?.message,
+        type: "error",
+      });
+      console.log(error);
     }
   };
 

@@ -1,9 +1,11 @@
-import { createContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import axios from "axios";
+import { NotificationContext } from "./NotificationContext";
 
 export const UserContext = createContext();
 
 export const UserContextProvider = ({ children }) => {
+  const notificationContext = useContext(NotificationContext);
   const [userData, setUserData] = useState(null);
 
   // Save user data
@@ -28,11 +30,18 @@ export const UserContextProvider = ({ children }) => {
         password,
       });
 
-      // if no response, return false for Error handling on Form
-      if (!response) return false;
-
       return true;
     } catch (error) {
+      console.log(error);
+      if (error.status === 500)
+        notificationContext.notify({
+          msg: error.response.statusText,
+          type: "error",
+        });
+      notificationContext.notify({
+        msg: error.response.data.message,
+        type: "error",
+      });
       return false;
     }
   };

@@ -8,21 +8,24 @@ import { AccountContextProvider } from "./context/AccountContext.jsx";
 import { ModalContextProvider } from "./context/ModalContext.jsx";
 import { ScoreContextProvider } from "./context/ScoreContext.jsx";
 import { UserContextProvider } from "./context/UserContext.jsx";
+import { NotificationContextProvider } from "./context/NotificationContext.jsx";
 
 createRoot(document.getElementById("root")).render(
   <BrowserRouter>
-    <UserContextProvider>
-      <AuthContextProvider>
-        <AccountContextProvider>
-          <ScoreContextProvider>
-            <ExerciseContextProvider>
-              <ModalContextProvider>
-                <App />
-              </ModalContextProvider>
-            </ExerciseContextProvider>
-          </ScoreContextProvider>
-        </AccountContextProvider>
-      </AuthContextProvider>
-    </UserContextProvider>
+    <NotificationContextProvider>
+      <UserContextProvider>
+        <AuthContextProvider>
+          <AccountContextProvider>
+            <ScoreContextProvider>
+              <ExerciseContextProvider>
+                <ModalContextProvider>
+                  <App />
+                </ModalContextProvider>
+              </ExerciseContextProvider>
+            </ScoreContextProvider>
+          </AccountContextProvider>
+        </AuthContextProvider>
+      </UserContextProvider>
+    </NotificationContextProvider>
   </BrowserRouter>
 );
