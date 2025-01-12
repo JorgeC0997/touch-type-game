@@ -43,17 +43,21 @@ export const createUser = async (req, res) => {
       );
       if (!accountResponse.rows[0].id)
         return res
-          .status(500)
+          .status(400)
           .json({ message: "Error occurred while creating user account" });
       res.status(200).json({
         user: userResponse.rows[0],
         accountId: accountResponse.rows[0].id,
       });
     } catch (error) {
+      if (error.message.includes("duplicate"))
+        return res
+          .status(400)
+          .json({ message: "User name already registered" });
       res.status(500).send({ message: error.message });
     }
   } catch (error) {
-    res.status(400).send({ message: error.message });
+    res.status(400).json({ message: error.message });
   }
 };
 
