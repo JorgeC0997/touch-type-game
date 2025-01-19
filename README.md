@@ -652,6 +652,7 @@ const hideModal = () => {
 * Implement a better Error handling in forms.
 * Improve error handling for api responses.
 * Add "forgot password?" to login form.
+* Improve form validation.
 
 
 
