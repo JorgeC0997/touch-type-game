@@ -152,6 +152,8 @@ is called *excludedKeys* and contains all unwanted keys that we don't want to be
 
 > **E.g.** ['Shift', 'Tab', 'CapsLock', 'Control', 'Alt', 'ArrowUp', etc...]
 
+***
+
 This application uses **React Context** that allows us to share state and data across multiple\
 components without having to pass props down through every level of the component tree avoiding\
 "prop drilling".
@@ -234,6 +236,8 @@ const logoutUser = async () => {
   };
 ```
 
+***
+
 * #### UserContext
 
 &nbsp; &nbsp; &nbsp; &nbsp; The user context holds the user data like id and username that other components\
@@ -304,6 +308,8 @@ const updateUserData = async ({ username = null, password = null } = {}) => {
   }
 };
 ```
+
+***
 
 * #### AccountContext
 
@@ -422,6 +428,8 @@ const setSuperuser = async (account_id) => {
 
 ![Superuser Button](/screenshots/super_user_button.png) ![Superuser Badge](/screenshots/super_user_badge.png)
 
+***
+
 * #### ExerciseContext
 
 &nbsp; &nbsp; &nbsp; &nbsp; Exercise context has functions to retrieve a single exercise by its id.
@@ -536,6 +544,8 @@ const generateExerciseList = async (level, controller) => {
 
 ![Exercise links](/screenshots/exercise_links.png)
 
+***
+
 * #### ScoreContext
 
 &nbsp; &nbsp; &nbsp; &nbsp; "**getScoresByAccount()**" populates the *scoresByAccount* state with an array\
@@ -618,6 +628,43 @@ const getHighestScore = async () => {
 
 ![Highest score](/screenshots/highest_score.png)
 
+***
+
+* #### NotificationContext
+
+&nbsp; &nbsp; &nbsp; &nbsp; The notification context takes care of the little notification rounded box that appears\
+&nbsp; &nbsp; &nbsp; &nbsp; in the middle section of the navigation bar, as shown below:
+
+![Default notification box](/screenshots/default_notification_box.png)
+
+&nbsp; &nbsp; &nbsp; &nbsp; This context provides two main functions **.notify()** and **.clearNotification()**.
+
+```
+notificationContext.notify({
+  msg: `Welcome, ${data.username}`,
+  delay: 3000,
+});
+```
+
+&nbsp; &nbsp; &nbsp; &nbsp; **.notify(msg, type, delay)**\
+&nbsp; &nbsp; &nbsp; &nbsp; * **msg**: String message that will appear inside the notification box.\
+&nbsp; &nbsp; &nbsp; &nbsp; * **type**: String indicating the styling for the notification box, options are:\
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; *"default"* and *"error"*.\
+&nbsp; &nbsp; &nbsp; &nbsp; * **delay**: Integer value representing the time in milliseconds that notification box will be visible before\
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; it diappears.
+
+> **_NOTE:_**   If no arguments have been passed for *type* and *delay*, they will be set to default values: *"defaul"* and *0* respectively.
+
+&nbsp; &nbsp; &nbsp; &nbsp; For error handling we can call **.notify()** with special error styling to notify the user of an error in the app.\
+&nbsp; &nbsp; &nbsp; &nbsp; To do this, simply change **type** to "error", E.j.: ```.notify({msg: "Invalid password", type: "error"})```
+
+![Error notification box](/screenshots/error_notification_box.png)
+
+> **_NOTE:_** Notice that we didn't pass a delay value which will cause the notification box to to remain visible\
+> until we call **_.clearNotification()_**
+
+***
+
 * #### ModalContext
 
 &nbsp; &nbsp; &nbsp; &nbsp; The modal context manages the state used in the modal component that is being\
@@ -646,6 +693,8 @@ const hideModal = () => {
 };
 ```
 
+***
+
 ## Future Improvements
 
 * Add more loading screens while waiting for api data.
@@ -654,7 +703,7 @@ const hideModal = () => {
 * Add "forgot password?" to login form.
 * Improve form validation.
 
-
+***
 
 ## Project Installation
 
